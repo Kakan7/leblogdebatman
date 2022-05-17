@@ -1,0 +1,22 @@
+/* Police */
+@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+/*body*/
+body{
+    font-family: 'Poppins', sans-serif;
+    background-color: #1A1D45;
+    color: #F5F7F9;
+}
+
+/*Nav*/
+.main-navbar .main-navbar-logo{
+    width: 55px;
+    margin-right: 16px;
+}
+
+/*accueil*/
+.batman-cover{
+    height: 400px;
+    background-image: url("../images/batman-cover.png");
+    background-attachment: fixed;
+    background-size: cover;
+}
