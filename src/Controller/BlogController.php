@@ -23,7 +23,7 @@ class BlogController extends AbstractController
     */
     #[Route('/nouvelle_publication/', name: 'new_publication')]
     #[IsGranted('ROLE_ADMIN')]
-    public function newPublication(Request $request, ManagerRegistry $doctrine): Response
+    public function newPublication(Request $request, ManagerRegistry $doctrine, SluggerInterface $slugger): Response
     {
 
     $article = new Article();
@@ -37,6 +37,7 @@ class BlogController extends AbstractController
         $article
         ->setPublicationDate(new \DateTime() )
             ->setAuthor( $this->getUser() )
+            ->setSlug($slugger->slug($article->getTitle() ) ->lower())
         ;
         $em = $doctrine->getManager();
         $em->persist($article);
@@ -72,8 +73,22 @@ class BlogController extends AbstractController
         'article'=>$article,
     ]);
 }
+    /*
+     *
+     * controller de la page listArticle
+     */
+    #[Route('/publication/liste/', name: 'publication_list')]
+    public function publicationList(ManagerRegistry $doctrine): Response
+    {
 
+        $articleRepo = $doctrine->getRepository(Article::class);
 
+        $articles = $articleRepo->findAll();
+
+        return $this->render('blog/publication_list.html.twig', [
+            'articles'=> $articles,
+        ]);
+    }
 
 
 }
