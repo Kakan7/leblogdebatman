@@ -14,6 +14,22 @@
 
             <div class="col-12 col-md-8 mx-auto">
 
+
+                {#Affichage nb d'articles#}
+                <div class="row">
+                    <p class="col-12 text-center">Nombre total d'articles : {{articles.getTotalItemCount()}}</p>
+                </div>
+
+                {#Affichage du menu de nav s'il y a des articles#}
+                {%if articles is not empty %}
+                <div class="row">
+                    <div class="col-12 my-3 text-center">
+                        <div class="d-inline-block">
+                            {{ knp_pagination_render(articles) }}
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
             {% for article in articles %}
 
                 {# Un article #}
@@ -34,7 +50,7 @@
 
                                 <div class="mb-2">
 
-                                   {{ article.content|scriptags|excerpt(100) }}
+                                   {{ article.content|striptags|excerpt(100) }}
                                     <a class="text-decoration-none" href="{{ path('blog_publication_view', {'id': article.id, 'slug': article.slug}) }}">Lire la suite</a>
 
                                 </div>
@@ -56,6 +72,16 @@
                 </div>
 
                 {%endfor%}
+                {#Affichage du menu de nav s'il y a des articles#}
+                {%if articles is not empty %}
+                    <div class="row">
+                        <div class="col-12 my-3 text-center">
+                            <div class="d-inline-block">
+                                {{ knp_pagination_render(articles) }}
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
 
 
             </div>
