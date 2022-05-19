@@ -20,7 +20,56 @@
 
         <div class="row">
 
-        {#TODO: afficher les articles#}
+        <div class="col-12 col-md-8 mx-auto">
+
+            <div class="row">
+                <h2 class="col-12 text-center">Dernieres publications</h2>
+            </div>
+
+            {% for article in articles %}
+
+                {# Un article #}
+                <div class="row">
+
+                    <div class="col-12">
+
+                        <div class="card my-3 bg-black">
+
+                            <div class="card-header">
+                                <a href="{{ path('blog_publication_view', {'id': article.id, 'slug': article.slug}) }}" class="text-decoration-none">
+                                    <i class="far fa-newspaper me-2"></i>
+                                    {{ article.title}}
+                                </a>
+                            </div>
+
+                            <div class="card-body">
+
+                                <div class="mb-2">
+
+                                    {{ article.content|scriptags|excerpt(50) }}
+                                    <a class="text-decoration-none" href="{{ path('blog_publication_view', {'id': article.id, 'slug': article.slug}) }}">Lire la suite</a>
+
+                                </div>
+
+                                <footer class="blockquote-footer my-2">Publié le <strong>{{ article.publicationDate| date('d/m/y à H\\hi') }}</strong> par <strong>{{ article.author.pseudonym }}</strong></footer>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            {%else%}
+
+                <div class="row">
+                    <p class="col-12 text-center alert alert-warning">Aucune publication à afficher.</p>
+                </div>
+
+            {%endfor%}
+
+        </div>
 
         </div>
 
