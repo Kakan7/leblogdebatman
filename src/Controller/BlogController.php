@@ -104,5 +104,31 @@ class BlogController extends AbstractController
         ]);
     }
 
+    /*
+     * Controller admin sup article
+     */
+    #[Route('/publication/suppression/{id}/',name : 'publication_delete',priority: 10)]
+    #[IsGranted('ROLE_ADMIN')]
+    public function publicationDelete(Article $article,Request $request, ManagerRegistry $doctrine):Response
+    {
+
+        $csrfToken = $request->query->get('csrf_token', '');
+
+        if (!$this->isCsrfTokenValid('blog_publication_delete_' . $article->getId(), $csrfToken)) {
+
+            $this->addFlash('error', 'Token de sécurité invalide, veuillez ré-essayez');
+
+        } else {
+
+            $em = $doctrine->getManager();
+            $em->remove($article);
+            $em->flush();
+
+            $this->addFlash('success', 'Article supprimé avec succès');
+        }
+
+            return $this->redirectToRoute('blog_publication_list');
+
+    }
 
 }
