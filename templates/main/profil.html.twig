@@ -25,8 +25,15 @@
                         <div class="row">
 
                             <div class="col-10 mx-auto">
-                                {#TODO Afficher vraie photo si existente#}
+                                {%if app.user.photo is null%}
+
                                 <img src="{{ asset('images/profil_default.jpg') }}" alt="" class="img-fluid img-thumbnail">
+
+                                {%else%}
+
+                                    <img src="{{ asset('images/profils/'~ app.user.photo)|imagine_filter('profil') }}" alt="" class="img-fluid img-thumbnail">
+
+                                {%endif%}
 
                             </div>
 
@@ -35,8 +42,7 @@
                         {# Lien vers la page de changement de photo #}
                         <div class="row">
                             <div class="col-12 pt-3">
-                                {#TODO Ajouter le lien href#}
-                                <a href="#">Modifier la photo de profil</a>
+                                <a href="{{path('main_edit_photo')}}">Modifier la photo de profil</a>
                             </div>
                         </div>
 
