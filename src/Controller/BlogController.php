@@ -131,4 +131,38 @@ class BlogController extends AbstractController
 
     }
 
+    /*
+     * Controller admin modif article
+     */
+    #[Route('/publication/modifier/{id}/',name : 'publication_edit',priority: 10)]
+    #[IsGranted('ROLE_ADMIN')]
+    public function publicationEdit(Article $article,Request $request, ManagerRegistry $doctrine, SluggerInterface $slugger):Response
+    {
+
+        $form = $this->createForm(NewArticleFormType::class, $article);
+
+        $form->handleRequest($request);
+
+        if($form->isSubmitted() && $form->isValid()){
+
+            $article->setSlug( $slugger->slug($article->getTitle())->lower() );
+            $em = $doctrine->getManager();
+            $em->flush();
+
+            $this->addFlash('success','Publication modifiée avec succés');
+
+            return  $this->redirectToRoute('blog_publication_view',[
+                'id'=>$article->getId(),
+            'slug'=>$article->getSlug(),
+            ]);
+        }
+
+
+
+        return $this->render('blog/publication_edit.html.twig',[
+            'form'=>$form->createView()
+        ]);
+
+    }
+
 }
